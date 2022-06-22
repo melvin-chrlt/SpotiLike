@@ -1,0 +1,43 @@
+footer{
+    background-color: black;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2em 0;
+
+    section{
+        display: flex;
+        justify-content: center;
+        gap: 6em;
+
+        nav{
+            display: flex;
+            gap: 3em;
+
+            a{
+                color: white;
+                text-decoration: none;
+                font-family: raleway;
+                font-size: 20px;
+                font-weight: 700;
+            }
+        }
+
+        div{
+            display: flex;
+            gap: 1.5em;
+            
+            i{
+                color: $secondaryColor;
+                font-size: 1.5em;
+            }
+        }
+    }
+
+    p{
+        margin: 0;
+        padding-top: 1em;
+        font-family: montserrat;
+    }
+}

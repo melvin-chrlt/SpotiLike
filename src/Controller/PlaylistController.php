@@ -132,6 +132,15 @@ class PlaylistController extends AbstractController
         return $this->render('playlist/autre.html.twig', ['entities' => $entities]);
     }
 
+    // RANDOM PLAYLISTS
+    #[Route('/DayPlaylist', name: 'app_day_playlist')]
+    public function day(PlaylistRepository $playlistManager): Response
+    {
+        $entities = $playlistManager->findBy(['id' => rand(33, 42)]);
+        
+        return $this->render('playlist/day.html.twig', ['entities' => $entities]);
+    }
+
 
     // LIKE PLAYLIST
     // #[Route('/playlist/{id}/like', name: 'app_like_playlist')]

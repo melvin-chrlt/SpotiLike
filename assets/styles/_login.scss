@@ -1,0 +1,73 @@
+#loginPage{
+    section{
+        width: 45%;
+        height: 50vh;
+        margin: 7em auto;
+        display: flex;
+
+        .formImage{
+            width: 35%;
+            height: 100%;
+            background-image: url(../images/pc.jpg);
+            background-position: center;
+            background-size: cover;
+        }
+
+        .form{
+            background-color: black;
+            position: relative;
+            width: 65%;
+            padding-right: 4em;
+            padding-left: 1.5em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            p{
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                font-family: montserrat;
+
+                a{
+                    color: $secondaryColor;
+                    text-decoration: none;
+                }
+            }
+
+            form{
+                width: 80%;
+
+                h2{
+                    padding-bottom: 1em;
+                    margin: 0;
+                    font-family: raleway;
+                    font-size: 24px;
+                }
+
+                div{
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.5em;
+                    padding-bottom: 1em;
+
+                    label{
+                        font-family: montserrat;
+                    }
+
+                    input{
+                        background-color: black;
+                        border: 1px $secondaryColor solid;
+                        padding: 0.5em;
+                        color: white;
+                    }
+                }
+
+                button{
+                    margin-top: 1.5em;
+                    margin-left: 6em;
+                }
+            }
+        }
+    }
+}

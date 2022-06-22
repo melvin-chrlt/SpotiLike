@@ -4,14 +4,21 @@
 
 {% block body %}
 {% include "__header.html.twig" %}
-    <h1>Register</h1>
+<section id="loginPage">
+    <section>
+        <div class="formImage"></div>
+        <div class="form">
+            <p>Vous avez déjà un compte ? <a href="/login">Connectez-vous</a></p>
+            {{ form_start(registrationForm) }}
+                <h2>Créez un compte</h2>
+                {{ form_row(registrationForm.email) }}
+                {{ form_row(registrationForm.username) }}
+                {{ form_row(registrationForm.plainPassword, { label: 'Password' }) }}
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.username) }}
-        {{ form_row(registrationForm.plainPassword, { label: 'Password' }) }}
-        {# {{ form_row(registrationForm.agreeTerms) }} #}
-
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+                <button type="submit" class="btn">Créer un compte</button>
+            {{ form_end(registrationForm) }}
+        </div>
+    </section>
+</section>
+{% include "__footer.html.twig" %}
 {% endblock %}
