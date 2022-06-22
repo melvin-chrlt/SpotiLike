@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter une playlist{% endblock %}
+
+{% block body %}
+{% include "__header.html.twig" %}
+    <h2>Ajouter une playlist</h2>
+
+    {{ form_start(form, {'method': 'POST' }) }}
+        {{ form_row(form.code , { label: 'Code :', 'attr': {'placeholder': "https://open.spotify.com..."} }) }}
+        {{ form_row(form.category , { label: 'Catégorie :' }) }}
+
+        <button type="submit">Ajouter</button>
+    {{ form_end(form) }}
+{% endblock %}

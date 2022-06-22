@@ -1,0 +1,16 @@
+<header>
+    <h1><a href="/">SpotiLike</a></h1>
+    <nav>
+        <li><a href="{{ path('app_playlist') }}">Découvrir</a></li>
+        <li><a href="">Classement</a></li>
+        <li><a href="">Playlist du jour</a></li>
+    </nav>
+    {% if is_granted('ROLE_USER') %}
+    <div>
+        <a href="" class="user"><i class="fa-regular fa-circle-user"></i>Mon compte</a>
+        <a href="/logout" class="logout">Se déconnecter</a>
+    </div>
+    {% else %}
+        <a href="/login" class="btn">Se connecter</a>
+    {% endif %}
+</header>

@@ -1,0 +1,19 @@
+body {
+    background-color: $primaryColor;
+    color: white;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    list-style: none;
+}
+
+.btn{
+    background-color: $secondaryColor;
+    padding: 0.5em 1.5em;
+    border-radius: 20px;
+    color: black;
+    text-decoration: none;
+    font-family: raleway;
+    font-weight: 700;
+    font-size: 20px;
+}

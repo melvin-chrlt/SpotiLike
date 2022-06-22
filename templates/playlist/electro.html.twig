@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Playlists Électro{% endblock %}
+
+{% block body %}
+{% include "__header.html.twig" %}
+    <h2>Playlists Électro</h2>
+    <a href="{{ path('app_playlist') }}">Toutes les catégories</a>
+    <a href="{{ path('app_add_playlist') }}">Ajouter une playlist</a>
+    <section>
+        {% for entity in entities %}
+            <article>
+                <iframe style="border-radius:12px" src="https://open.spotify.com/embed{{ entity.code }}?utm_source=generator" width="20%" height="380" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+                {# <p>Par {{ entity.author.username }}</p> #}
+                {# <a href="{{ path('app_like_playlist', {'id': entity.id}) }}" class="btn btn-link js-like" onclick="onClickBtnLike(event)"> #}
+                <a href="#">
+                    {% if app.user and entity.isLikedByUser(app.user) %}
+                        <i class="fa-solid fa-heart" style="color:#81B71A";></i>
+                    {% else %}
+                        <i class="fa-regular fa-heart" style="color:#81B71A";></i>
+                    {% endif %}
+                        <span class="js-likes">{{ entity.likes|length }}</span>
+                </a>
+                <p>{{ entity.category.label }}</p>
+            </article>
+        {% endfor %}
+    </section>
+{% endblock %}
+
+{# {% block javascripts %}
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+
+        function onClickBtnLike(event){
+            event.preventDefault();
+
+            const url = this.href;
+            const spanCount = this.document.querySelector('span.js-likes');
+            const icone = this.document.querySelector('i');
+
+            axios.get(url).then(function(response){
+                console.log(response);
+                spanCount.textContent = response.data.likes;
+
+                if(icone.classList.contains('solid')) {
+                    icone.classList.replace('solid', 'regular');
+                } else {
+                    icone.classList.replace('regular', 'solid');
+                } 
+            });
+        }
+
+        document.querySelectorAll('a.js-like').forEach(function(link){
+            link.addEventListener('click', onClickBtnLike);
+        });
+    </script>
+{% endblock %} #}
