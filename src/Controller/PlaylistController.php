@@ -79,7 +79,7 @@ class PlaylistController extends AbstractController
     }
 
     // SEE ROCK PLAYLISTS
-    #[Route('/rockPlaylist', name: 'app_rock_playlist')]
+    #[Route('/RockPlaylist', name: 'app_rock_playlist')]
     public function rock(PlaylistRepository $playlistManager): Response
     {
         $entities = $playlistManager->findBy(['category' => 3]);
@@ -88,7 +88,7 @@ class PlaylistController extends AbstractController
     }
 
     // SEE ELECTRO PLAYLISTS
-    #[Route('/electroPlaylist', name: 'app_electro_playlist')]
+    #[Route('/ElectroPlaylist', name: 'app_electro_playlist')]
     public function electro(PlaylistRepository $playlistManager): Response
     {
         $entities = $playlistManager->findBy(['category' => 4]);
@@ -97,7 +97,7 @@ class PlaylistController extends AbstractController
     }
 
     // SEE REGGAE PLAYLISTS
-    #[Route('/reggaePlaylist', name: 'app_reggae_playlist')]
+    #[Route('/ReggaePlaylist', name: 'app_reggae_playlist')]
     public function reggae(PlaylistRepository $playlistManager): Response
     {
         $entities = $playlistManager->findBy(['category' => 5]);
@@ -106,7 +106,7 @@ class PlaylistController extends AbstractController
     }
 
     // SEE CHILL PLAYLISTS
-    #[Route('/chillPlaylist', name: 'app_chill_playlist')]
+    #[Route('/ChillPlaylist', name: 'app_chill_playlist')]
     public function chill(PlaylistRepository $playlistManager): Response
     {
         $entities = $playlistManager->findBy(['category' => 6]);
@@ -115,7 +115,7 @@ class PlaylistController extends AbstractController
     }
 
     // SEE CLASSIQUE PLAYLISTS
-    #[Route('/classiquePlaylist', name: 'app_classique_playlist')]
+    #[Route('/ClassiquePlaylist', name: 'app_classique_playlist')]
     public function classique(PlaylistRepository $playlistManager): Response
     {
         $entities = $playlistManager->findBy(['category' => 7]);
@@ -124,7 +124,7 @@ class PlaylistController extends AbstractController
     }
 
     // SEE AUTRE PLAYLISTS
-    #[Route('/autrePlaylist', name: 'app_autre_playlist')]
+    #[Route('/AutrePlaylist', name: 'app_autre_playlist')]
     public function autre(PlaylistRepository $playlistManager): Response
     {
         $entities = $playlistManager->findBy(['category' => 8]);

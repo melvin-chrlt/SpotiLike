@@ -1,24 +1,24 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}SpotiLike | Acceuil{% endblock %}
+{% block title %}SpotiLike | Accueil{% endblock %}
 
 {% block body %}
 {% include "__header.html.twig" %}
 
-    <section id="acceuil">
-        <section class="acceuilTop">
+    <section id="accueil">
+        <section class="accueilTop">
             <h2>Trouvez la playlist qu'il vous faut !</h2>
             <p>Sur SpotiLike vous trouverez les playlists partagées par la communauté de Spotify, n'hésitez pas à partager la votre !</p>
-            <div class="acceuilTopBtn">
+            <div class="accueilTopBtn">
                 <a href="/playlist" class="btn">Découvrir</a>
                 <a href="" class="btn btn2">Partager</a>
             </div>
         </section>
 
-        <section class="acceuilMid">
-            <div class="acceuilMidPlaylist">
+        <section class="accueilMid">
+            <div class="accueilMidPlaylist">
                 <article>
-                    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/6mkG7zTAa2W3canPUmIg4M?utm_source=generator" width="20%" height="380" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+                    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/6mkG7zTAa2W3canPUmIg4M?utm_source=generator" width="150%" height="380" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
                     {# <a href="#">
                         {% if app.user and entity.isLikedByUser(app.user) %}
                             <i class="fa-solid fa-heart" style="color:#81B71A";></i>
@@ -29,7 +29,7 @@
                     </a> #}
                 </article>
                 <article>
-                    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/6mkG7zTAa2W3canPUmIg4M?utm_source=generator" width="20%" height="380" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+                    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/6mkG7zTAa2W3canPUmIg4M?utm_source=generator" width="150%" height="380" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
                     {# <a href="#">
                         {% if app.user and entity.isLikedByUser(app.user) %}
                             <i class="fa-solid fa-heart" style="color:#81B71A";></i>
@@ -40,7 +40,7 @@
                     </a> #}
                 </article>
                 <article>
-                    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/6mkG7zTAa2W3canPUmIg4M?utm_source=generator" width="20%" height="380" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+                    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/6mkG7zTAa2W3canPUmIg4M?utm_source=generator" width="150%" height="380" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
                     {# <a href="#">
                         {% if app.user and entity.isLikedByUser(app.user) %}
                             <i class="fa-solid fa-heart" style="color:#81B71A";></i>
@@ -51,26 +51,37 @@
                     </a> #}
                 </article>
             </div>
-            <div class="acceuilMidImage"></div>
+            <div class="accueilMidImage"></div>
         </section>
 
-        <section class="acceuilBot">
-            <article>
-                <img src="{{ asset('images/microphone.png') }}" alt="îcone d'un microphone">
-                <h4>Pop</h4>
-            </article>
-            <article>
-                <img src="{{ asset('images/headphones.png') }}" alt="îcone d'un casque pour écouter de la musique">
-                <h4>Rap</h4>
-            </article>
-            <article>
-                <img src="{{ asset('images/equalizer.png') }}" alt="îcone d'un equalizer">
-                <h4>Rock</h4>
-            </article>
-            <article>
-                <img src="{{ asset('images/sound-wave.png') }}" alt="îcone d'une vague de son">
-                <h4>Électro</h4>
-            </article>
+        <section class="accueilBot">
+            <a href="/PopPlaylist">
+                <article>
+                    <img src="{{ asset('images/microphone.png') }}" alt="îcone d'un microphone">
+                    <h4>Pop</h4>
+                </article>
+            </a>
+            
+            <a href="/HipHopPlaylist">
+                <article class="down">
+                    <img src="{{ asset('images/headphones.png') }}" alt="îcone d'un casque pour écouter de la musique">
+                    <h4>Hip-Hop</h4>
+                </article>
+            </a>
+
+            <a href="/RockPlaylist">
+                <article>
+                    <img src="{{ asset('images/equalizer.png') }}" alt="îcone d'un equalizer">
+                    <h4>Rock</h4>
+                </article>
+            </a>
+
+            <a href="/ElectroPlaylist">
+                <article class="down">
+                    <img src="{{ asset('images/sound-wave.png') }}" alt="îcone d'une vague de son">
+                    <h4>Électro</h4>
+                </article>
+            </a>
         </section>
     </section>
 {% endblock %}
