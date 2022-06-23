@@ -4,26 +4,28 @@
 
 {% block body %}
 {% include "__header.html.twig" %}
-    <h2>Autres Playlists</h2>
-    <a href="{{ path('app_playlist') }}">Toutes les catégories</a>
-    <a href="{{ path('app_add_playlist') }}">Ajouter une playlist</a>
-    <section>
-        {% for entity in entities %}
-            <article>
-                <iframe style="border-radius:12px" src="https://open.spotify.com/embed{{ entity.code }}?utm_source=generator" width="20%" height="380" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-                {# <p>Par {{ entity.author.username }}</p> #}
-                {# <a href="{{ path('app_like_playlist', {'id': entity.id}) }}" class="btn btn-link js-like" onclick="onClickBtnLike(event)"> #}
-                <a href="#">
-                    {% if app.user and entity.isLikedByUser(app.user) %}
-                        <i class="fa-solid fa-heart" style="color:#81B71A";></i>
-                    {% else %}
-                        <i class="fa-regular fa-heart" style="color:#81B71A";></i>
-                    {% endif %}
-                        <span class="js-likes">{{ entity.likes|length }}</span>
-                </a>
-                <p>{{ entity.category.label }}</p>
-            </article>
-        {% endfor %}
+    <section id="discover">
+        <div>
+            <h2>Découvrez une playlist diverse</h2>
+            <p>Ici vous êtes à la découverte des playlists diverse choisies aléatoirement, partagées par la communauté</p>
+        </div>
+        <section>
+            {% for entity in entities %}
+                <article>
+                    <iframe style="border-radius:12px" src="https://open.spotify.com/embed{{ entity.code }}?utm_source=generator" width="100%" height="380" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+                    {# <p>Par {{ entity.author.username }}</p> #}
+                    {# <a href="{{ path('app_like_playlist', {'id': entity.id}) }}" class="btn btn-link js-like" onclick="onClickBtnLike(event)"> #}
+                    <a href="#">
+                        {% if app.user and entity.isLikedByUser(app.user) %}
+                            <i class="fa-solid fa-heart"></i>
+                        {% else %}
+                            <i class="fa-regular fa-heart"></i>
+                        {% endif %}
+                            <span class="js-likes">{{ entity.likes|length }}</span>
+                    </a>
+                </article>
+            {% endfor %}
+        </section>
     </section>
 {% include "__footer.html.twig" %}
 {% endblock %}
