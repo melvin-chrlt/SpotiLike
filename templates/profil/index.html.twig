@@ -1,18 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}SpotiLike | Playlist du jour{% endblock %}
+{% block title %}SpotiLike | Mon compte{% endblock %}
 
 {% block body %}
 {% include "__header.html.twig" %}
-    <section id="playlistOfDay">
-        <div>
-            <h2>Playlist du jour</h2>
-            <p>Ici vous êtes à la découverte d'une playlist choisie aléatoirement partagée par la communauté</p>
-        </div>
+    <section id="profile">
+        <a href="/addPlaylist" class="btn">Partager une playlist</a>
+        <h2>Mes playlists partagées</h2>
         <section>
             {% for entity in entities %}
                 <article>
-                    <iframe style="border-radius:12px" src="https://open.spotify.com/embed{{ entity.code }}?utm_source=generator" width="100%" height="550" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+                    <iframe style="border-radius:12px" src="https://open.spotify.com/embed{{ entity.code }}?utm_source=generator" width="100%" height="380" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
                     <a href="{{ path('app_like_playlist', {'id': entity.id}) }}" class="btn-link js-like">
                         {% if app.user and entity.isLikedByUser(app.user) %}
                             <i class="fa-solid fa-heart"></i>
@@ -20,6 +18,23 @@
                             <i class="fa-regular fa-heart"></i>
                         {% endif %}
                             <span class="js-likes">{{ entity.likes|length }}</span>
+                    </a>
+                </article>
+            {% endfor %}
+        </section>
+
+        <h2>Mes playlists likées</h2>
+        <section>
+            {% for like in likes %}
+                <article>
+                    <iframe style="border-radius:12px" src="https://open.spotify.com/embed{{ like.playlist.code }}?utm_source=generator" width="100%" height="380" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+                    <a href="{{ path('app_like_playlist', {'id': like.id}) }}" class="btn-link js-like">
+                        {% if app.user and like.playlist.isLikedByUser(app.user) %}
+                            <i class="fa-solid fa-heart"></i>
+                        {% else %}
+                            <i class="fa-regular fa-heart"></i>
+                        {% endif %}
+                            <span class="js-likes">{{ like.playlist.likes|length }}</span>
                     </a>
                 </article>
             {% endfor %}

@@ -121,4 +121,5 @@ class Playlist
 
         return $this;
     }
+
 }

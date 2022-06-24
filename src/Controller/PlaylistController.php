@@ -4,8 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Playlist;
 use App\Form\PlaylistType;
+use App\Entity\PlaylistLike;
 use App\Repository\CategoryRepository;
 use App\Repository\PlaylistRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\PlaylistLikeRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -143,43 +146,57 @@ class PlaylistController extends AbstractController
 
 
     // LIKE PLAYLIST
-    // #[Route('/playlist/{id}/like', name: 'app_like_playlist')]
-    // public function like(Playlist $playlist, EntityManagerInterface $em, PlaylistLikeRepository $likeManager): Response
-    // {
-    //     $user = $this->getUser();
-
-    //     if(!$user) return $this->json([
-    //         'code' => 403,
-    //         'message' => "Unauthorized"
-    //     ], 403);
+    #[Route('/playlist/{id}/like', name: 'app_like_playlist')]
+    #[IsGranted('ROLE_USER')]
+    public function like(Playlist $playlist, EntityManagerInterface $em, PlaylistLikeRepository $likeManager): Response
+    {
+        $user = $this->getUser();
         
-    //     if($playlist->isLikedByUser($user)) {
-    //         $like = $likeManager->findOneBy([
-    //             'playlist' => $playlist,
-    //             'user' => $user
-    //         ]);
+        // Si le user a déjà liké
+        if($playlist->isLikedByUser($user)) {
+            $like = $likeManager->findOneBy([
+                'playlist' => $playlist,
+                'user' => $user
+            ]);
+            
+            $em->remove($like);
+            $em->flush();
+            
+            return $this->redirectToRoute($_SERVER['HTTP_REFERER']);
+        }
+        
+        // Si le user n'a pas liké
+        $like = new PlaylistLike();
+        $like->setPlaylist($playlist)
+        ->setUser($user);
+        
+        $em->persist($like);
+        $em->flush();
+        
+        return $this->redirectToRoute($_SERVER['HTTP_REFERER']);
+    }
 
-    //         $em->remove($like);
-    //         $em->flush();
+    // CLASSEMENT PLAYLISTS LIKE
+    #[Route('/ClassementLikePlaylist', name: 'app_classement_like_playlist')]
+    public function classementLike(PlaylistRepository $playlistManager): Response
+    {
+        $entities = $playlistManager->findBy([], ['likes' => 'DESC']);
+        
+        return $this->render('classement/like.html.twig', ['entities' => $entities]);
+    }
 
-    //         return $this->json([
-    //             'code' => 200,
-    //             'message' => 'Like bien supprimé',
-    //             'likes' => $likeManager->count(['playlist' => $playlist])
-    //         ], 200);
-    //     }
+    // PAGE MON COMPTE
+    #[Route('/profile', name: 'app_profil')]
+    public function profil(PlaylistRepository $playlistManager, PlaylistLikeRepository $playlistLikeManager): Response
+    {
+        /** @var \App\Entity\User $user */
+        $user = $this->getUser();
+        $entities = $playlistManager->findBy(['author' => $user->getId()]);
+        $likes = $playlistLikeManager->findBy(['user' => $user->getId()]);
 
-    //     $like = new PlaylistLike();
-    //     $like->setPlaylist($playlist)
-    //          ->setUser($user);
-
-    //     $em->persist($like);
-    //     $em->flush();
-
-    //     return $this->json([
-    //         'code' => 200, 
-    //         'message' => 'Like bien ajouté',
-    //         'likes' => $likeManager->count(['playlist' => $playlist])
-    //     ], 200);
-    // }
+        return $this->render('profil/index.html.twig', [
+            'entities' => $entities,
+            'likes' => $likes
+        ]);
+    }
 }

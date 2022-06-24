@@ -4,13 +4,21 @@
 
 {% block body %}
 {% include "__header.html.twig" %}
-    <h2>Ajouter une playlist</h2>
+<section id="loginPage">
+    <section>
+        <div class="formImage"></div>
+        <div class="form">
+            {{ form_start(form, {'method': 'POST' }) }}
+                <h2>Ajouter une playlist</h2>
+                <a href="" class="tuto">Comment faire ?</a>
+                {{ form_row(form.code , { label: 'Code :', 'attr': {'placeholder': "https://open.spotify.com..."} }) }}
+                {{ form_row(form.category , { label: 'Catégorie :' }) }}
 
-    {{ form_start(form, {'method': 'POST' }) }}
-        {{ form_row(form.code , { label: 'Code :', 'attr': {'placeholder': "https://open.spotify.com..."} }) }}
-        {{ form_row(form.category , { label: 'Catégorie :' }) }}
-
-        <button type="submit">Ajouter</button>
-    {{ form_end(form) }}
+                <button type="submit" class="btn">Partager</button>
+            {{ form_end(form) }}
+        </div>
+    </section>
+</section>
+    
 {% include "__footer.html.twig" %}
 {% endblock %}

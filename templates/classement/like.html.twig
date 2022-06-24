@@ -1,18 +1,18 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}SpotiLike | Playlist du jour{% endblock %}
+{% block title %}SpotiLike | Classement{% endblock %}
 
 {% block body %}
 {% include "__header.html.twig" %}
-    <section id="playlistOfDay">
+    <section id="discover">
         <div>
-            <h2>Playlist du jour</h2>
-            <p>Ici vous êtes à la découverte d'une playlist choisie aléatoirement partagée par la communauté</p>
+            <h2>Classement</h2>
+            <p>Classement des playlists les plus likées</p>
         </div>
         <section>
-            {% for entity in entities %}
+            {% for entity in entities | slice(0, 10) %}
                 <article>
-                    <iframe style="border-radius:12px" src="https://open.spotify.com/embed{{ entity.code }}?utm_source=generator" width="100%" height="550" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+                    <iframe style="border-radius:12px" src="https://open.spotify.com/embed{{ entity.code }}?utm_source=generator" width="100%" height="380" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
                     <a href="{{ path('app_like_playlist', {'id': entity.id}) }}" class="btn-link js-like">
                         {% if app.user and entity.isLikedByUser(app.user) %}
                             <i class="fa-solid fa-heart"></i>

@@ -1,0 +1,41 @@
+#profile{
+    position: relative;
+
+    .btn{
+        position: absolute;
+        top: 25px;
+        left: 25px;
+    }
+
+    h2{
+        font-family: raleway;
+        font-size: 48px;
+        font-weight: bold;
+        margin: 0 auto;
+        text-align: center;
+        padding-top: 2em;
+        padding-bottom: 1em;
+    }
+
+    section{
+        padding: 3em 0;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 1.5em;
+
+        a{
+            display: flex;
+            align-items: center;
+            color: white;
+            font-family: montserrat;
+            text-decoration: none;
+
+            i{
+                color: $secondaryColor;
+                margin-right: 0.5em;
+                font-size: 1.5em;
+            }
+        }
+    }
+}
