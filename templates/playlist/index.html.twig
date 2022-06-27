@@ -4,28 +4,18 @@
 
 {% block body %}
 {% include "__header.html.twig" %}
-    <p>Page playlist</p>
-    {% if is_granted('ROLE_USER') %}
-        <a href="{{ path('app_add_playlist') }}">Ajouter une playlist</a>
-        <a href="{{ path('app_all_playlist') }}">Voir toutes les playlists</a>
-        <a href="{{ path('app_pop_playlist') }}">Pop</a>
-        <a href="{{ path('app_hip_hop_playlist') }}">Hip-Hop</a>
-        <a href="{{ path('app_rock_playlist') }}">Rock</a>
-        <a href="{{ path('app_electro_playlist') }}">Électro</a>
-        <a href="{{ path('app_reggae_playlist') }}">Reggae</a>
-        <a href="{{ path('app_chill_playlist') }}">Chill</a>
-        <a href="{{ path('app_classique_playlist') }}">Classique</a>
-        <a href="{{ path('app_autre_playlist') }}">Autre</a>
-    {% else %}
-        <a href="{{ path('app_all_playlist') }}">Voir toutes les playlists</a>
-        <a href="{{ path('app_pop_playlist') }}">Pop</a>
-        <a href="{{ path('app_hip_hop_playlist') }}">Hip-Hop</a>
-        <a href="{{ path('app_rock_playlist') }}">Rock</a>
-        <a href="{{ path('app_electro_playlist') }}">Électro</a>
-        <a href="{{ path('app_reggae_playlist') }}">Reggae</a>
-        <a href="{{ path('app_chill_playlist') }}">Chill</a>
-        <a href="{{ path('app_classique_playlist') }}">Classique</a>
-        <a href="{{ path('app_autre_playlist') }}">Autre</a>
-    {% endif %}
+    <section id="playlistCat">
+        <h2>Choisissez une catégorie</h2>
+        <section>
+            <a href="{{ path('app_pop_playlist') }}" class="green">Pop</a>
+            <a href="{{ path('app_hip_hop_playlist') }}" class="black">Hip-Hop</a>
+            <a href="{{ path('app_rock_playlist') }}" class="green">Rock</a>
+            <a href="{{ path('app_electro_playlist') }}" class="black">Électro</a>
+            <a href="{{ path('app_reggae_playlist') }}" class="black">Reggae</a>
+            <a href="{{ path('app_chill_playlist') }}" class="green">Chill</a>
+            <a href="{{ path('app_classique_playlist') }}" class="black">Classique</a>
+            <a href="{{ path('app_autre_playlist') }}" class="green">Autre</a>
+        </section>
+    </section>
 {% include "__footer.html.twig" %}
 {% endblock %}

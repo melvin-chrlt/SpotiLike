@@ -21,7 +21,7 @@ class PlaylistLikeRepository extends ServiceEntityRepository
         parent::__construct($registry, PlaylistLike::class);
     }
 
-    public function add(PlaylistLike $entity, bool $flush = false): void
+    public function add(PlaylistLike $entity, bool $flush = true): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +30,7 @@ class PlaylistLikeRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(PlaylistLike $entity, bool $flush = false): void
+    public function remove(PlaylistLike $entity, bool $flush = true): void
     {
         $this->getEntityManager()->remove($entity);
 

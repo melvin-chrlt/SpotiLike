@@ -1,0 +1,41 @@
+#playlistCat{
+    h2{
+        margin: 0 auto;
+        text-align: center;
+        padding: 2em 0;
+        font-family: raleway;
+        font-size: 48px;
+        font-weight: bold;
+    }
+
+    section{
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 1.5em;
+        padding-bottom: 3em;
+
+        a{
+            width: 20%;
+            padding: 2.5em 0;
+            text-align: center;
+            border-radius: 40px;
+            font-family: montserrat;
+            font-size: 48px;
+            text-decoration: none;
+            &:hover{
+                font-weight: bold;
+            }
+        }
+
+        .green{
+            background-color: $secondaryColor;
+            color: black;
+        }
+
+        .black{
+            background-color: black;
+            color: $secondaryColor;
+        }
+    }
+}

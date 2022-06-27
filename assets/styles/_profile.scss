@@ -37,5 +37,25 @@
                 font-size: 1.5em;
             }
         }
+
+        article{
+            div{
+                display: flex;
+                justify-content: space-between;
+
+                form{
+                    button{
+                        background-color: red;
+                        color: black;
+                        font-family: montserrat;
+                        font-weight: bold;
+                        padding: 0.5em;
+                        border-radius: 10px;
+                        border: none;
+                    }
+                }
+            }
+        }
+
     }
 }

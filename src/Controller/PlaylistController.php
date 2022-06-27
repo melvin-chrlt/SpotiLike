@@ -7,7 +7,6 @@ use App\Form\PlaylistType;
 use App\Entity\PlaylistLike;
 use App\Repository\CategoryRepository;
 use App\Repository\PlaylistRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PlaylistLikeRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -45,13 +44,33 @@ class PlaylistController extends AbstractController
             // set dans mon instance de playlist le user de la session actuelle et le code contenu dans $url
             $playlistManager->add($playlist);
             // $this->addFlash('success', 'La playlist a bien été ajoutée');
-            return $this->redirectToRoute('app_playlist');
+            return $this->redirectToRoute('app_profil');
         }
         
         return $this->render('playlist/add.html.twig', [
             'form' => $form->createView(),
             'categories' => $categories,
         ]);
+    }
+
+    // REMOVE PLAYLIST
+    #[Route('/delPlaylist/{id<\d+>}', name: 'app_delete_playlist')]
+    #[IsGranted('ROLE_USER')]
+    public function delete(Playlist $playlist, PlaylistLike $playlistLike, PlaylistRepository $playlistManager, PlaylistLikeRepository $playlistLikeManager, Request $request): Response
+    {
+        //On récupère le token envoyer par le formulaire
+        $csrf_token = $request->request->get('token');
+
+        //On vérifie si il correspond à celui de la session courante
+        if($this->isCsrfTokenValid('delete-playlist', $csrf_token)){;
+            $playlistLikeManager->remove($playlistLike);
+            $playlistManager->remove($playlist);
+            // $this->addFlash('success', 'La playlist a bien été supprimée');
+            return $this->redirectToRoute('app_profile');
+        }
+        
+        // $this->addFlash('error', 'Le csrf Token est invalide');
+        return $this->redirectToRoute('app_profile');
     }
 
     // SEE ALL PLAYLISTS
@@ -135,7 +154,7 @@ class PlaylistController extends AbstractController
         return $this->render('playlist/autre.html.twig', ['entities' => $entities]);
     }
 
-    // RANDOM PLAYLISTS
+    // DAY OF THE PLAYLIST
     #[Route('/DayPlaylist', name: 'app_day_playlist')]
     public function day(PlaylistRepository $playlistManager): Response
     {
@@ -148,40 +167,57 @@ class PlaylistController extends AbstractController
     // LIKE PLAYLIST
     #[Route('/playlist/{id}/like', name: 'app_like_playlist')]
     #[IsGranted('ROLE_USER')]
-    public function like(Playlist $playlist, EntityManagerInterface $em, PlaylistLikeRepository $likeManager): Response
+    public function like(Request $request, PlaylistRepository $playlistManager): Response
     {
         $user = $this->getUser();
         
-        // Si le user a déjà liké
-        if($playlist->isLikedByUser($user)) {
-            $like = $likeManager->findOneBy([
-                'playlist' => $playlist,
-                'user' => $user
-            ]);
-            
-            $em->remove($like);
-            $em->flush();
-            
-            return $this->redirectToRoute($_SERVER['HTTP_REFERER']);
+        $playlist = $playlistManager->findOneBy(['id' => $id]);
+        if($playlist->getLikes()->contains($user) == true ){
+            $playlist->removeLike($user);
+        }else{
+            $playlist->addLike($user);
         }
-        
+
+        $playlistManager->add($playlist);
+        return $this->redirect($request->headers->get('referer'));
+
+        // Si le user a déjà liké
+        // if($playlist->isLikedByUser($user)) {
+        //     $like = $likeManager->findOneBy([
+        //         'playlist' => $playlist,
+        //         'user' => $user
+        //     ]);
+        //     $em->remove($like);
+        //     $em->flush();
+            
+        //     return $this->redirect($request->headers->get('referer'));
+        // }
         // Si le user n'a pas liké
-        $like = new PlaylistLike();
-        $like->setPlaylist($playlist)
-        ->setUser($user);
+        // $like = new PlaylistLike();
+        // $like->setPlaylist($playlist)
+        // ->setUser($user);
         
-        $em->persist($like);
-        $em->flush();
+        // $em->persist($like);
+        // $em->flush();
         
-        return $this->redirectToRoute($_SERVER['HTTP_REFERER']);
+        // return $this->redirect($request->headers->get('referer'));
     }
 
     // CLASSEMENT PLAYLISTS LIKE
     #[Route('/ClassementLikePlaylist', name: 'app_classement_like_playlist')]
     public function classementLike(PlaylistRepository $playlistManager): Response
     {
-        $entities = $playlistManager->findBy([], ['likes' => 'DESC']);
-        
+        $entities = $playlistManager->findAll();
+        //array like  +tri
+        //renvoi array a la vue
+        dd($entities);
+        foreach ($entities as $entity){
+            $likes[] = $entity->getLikes();
+        } 
+        dd($likes);
+        usort($entities , function ($item1, $item2){
+            return $item1->getLikes() <=>  $item2->getLikes();
+        });
         return $this->render('classement/like.html.twig', ['entities' => $entities]);
     }
 
