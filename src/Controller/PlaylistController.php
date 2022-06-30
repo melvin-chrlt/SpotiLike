@@ -167,7 +167,7 @@ class PlaylistController extends AbstractController
     // LIKE PLAYLIST
     #[Route('/playlist/{id}/like', name: 'app_like_playlist')]
     #[IsGranted('ROLE_USER')]
-    public function like(Request $request, PlaylistRepository $playlistManager): Response
+    public function like(int $id, Request $request, PlaylistRepository $playlistManager): Response
     {
         $user = $this->getUser();
         

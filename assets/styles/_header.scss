@@ -13,19 +13,76 @@ header{
         text-decoration: none;
     }
 
-    nav{
-        display: flex;
-        gap: 2.5em;
+    .menu{
+        ul{
+            display: flex;
+            gap: 2.5em;
+            list-style: none;
+            margin: 0;
+            padding: 0;
 
-        a{
-            color: white;
-            text-decoration: none;
-            font-family: raleway;
-            font-size: 24px;
+            li{
+                a{
+                    color: white;
+                    text-decoration: none;
+                    font-family: raleway;
+                    font-size: 24px;
+                }
+            }
         }
     }
 
-    div{
+    #menuBurger{
+        display: none;
+        transition: all ease-in-out 0.3s;
+        cursor: pointer;
+
+        .bar{
+            margin-top: 0.5em;
+            width: 45px;
+            height: 4px;
+            border-radius: 25px;
+            background-color: white;
+            transition: all ease-in-out 0.3s;
+        }
+
+        .middle{
+            width: 30px;
+            transition: all ease-in-out 0.3s;
+        }
+    }
+
+    #menuBurger:hover{
+        
+        .bar{
+            width: 30px;
+        }
+
+        .middle{
+            width: 45px;
+        }
+    }
+
+    #close{
+        position: absolute;
+        top: 40px;
+        right: 100px;
+        display: none;
+        z-index: 100000;
+        color: white;
+        font-size: 6em;
+        transition: all ease-in-out 0.2s;
+        &:hover{
+            cursor: pointer;
+            color: $secondaryColor;
+        }
+    }
+
+    .displayNone{
+        display: none;
+    }
+
+    #profileBtn{
         display: flex;
         align-items: center;
         gap: 1em;
@@ -61,6 +118,78 @@ header{
             text-decoration: none;
             &:hover{
                 font-weight: bold;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1000px){
+    header{
+        #menuBurger{
+            display: block;
+        }
+
+        .menu{
+            position: fixed;
+            top: 0;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            gap: 2em;
+            justify-content: center;
+            background: rgba(black, 0.8);
+            height: 100%;
+            width: 100%;
+            z-index: 10;
+
+            .user{
+                position: absolute;
+                top: 50px;
+                left: 100px;
+                color: $secondaryColor;
+
+                i{
+                    font-size: 10em;
+                }
+            }
+
+            h1{
+                font-size: 48px;
+            }
+
+            ul{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 6em;
+                width: 100%;
+                margin: 0;
+
+                li>a{
+                    font-size: 35px;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 600px){
+    header{
+        .btn{
+            display: none;
+        }
+    }
+}
+
+@media screen and (max-width: 460px){
+    header{
+        .menu{
+            .user{
+                left: 25px;
+            }
+
+            #close{
+                right: 50px;
             }
         }
     }

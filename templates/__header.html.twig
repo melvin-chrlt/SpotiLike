@@ -1,12 +1,21 @@
 <header>
+    <div id="menuBurger">
+        <div class="bar"></div>
+        <div class="bar middle"></div>
+        <div class="bar"></div>
+    </div>
     <h1><a href="/">SpotiLike</a></h1>
-    <nav>
-        <li><a href="/playlist">Découvrir</a></li>
-        <li><a href="/ClassementLikePlaylist">Classement</a></li>
-        <li><a href="/DayPlaylist">Playlist du jour</a></li>
+    <nav class="menu">
+        <a href="/profile" class="user displayNone"><i class="fa-regular fa-circle-user"></i></a>
+        <i class="fas fa-times" id="close"></i>
+        <ul>
+            <li><a href="/playlist">Découvrir</a></li>
+            <li><a href="/ClassementLikePlaylist">Classement</a></li>
+            <li><a href="/DayPlaylist">Playlist du jour</a></li>
+        </ul>
     </nav>
     {% if is_granted('ROLE_USER') %}
-    <div>
+    <div id="profileBtn">
         <a href="/profile" class="user"><i class="fa-regular fa-circle-user"></i>Mon compte</a>
         <a href="/logout" class="logout">Se déconnecter</a>
     </div>
@@ -14,3 +23,26 @@
         <a href="/login" class="btn">Se connecter</a>
     {% endif %}
 </header>
+
+{% block javascripts %}
+    <script>
+        let navMenu = document.querySelector(".menu");
+        let closeBtn = document.querySelector("#close");
+        let openMenu = document.querySelector("#menuBurger");
+        let display = document.querySelector(".displayNone");
+
+        // Ouvrir le menu burger
+        openMenu.addEventListener("click", function(){
+            navMenu.style.display = "flex";
+            closeBtn.style.display = "block";
+            display.style.display = "flex";
+        })
+
+        // Fermer le menu burger
+        closeBtn.addEventListener("click", function(){
+            navMenu.style.display = "none";
+            closeBtn.style.display = "none";
+            display.style.display = "none";
+        })
+    </script>
+{% endblock %}
