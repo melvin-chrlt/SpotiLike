@@ -175,6 +175,17 @@ header{
 
 @media screen and (max-width: 600px){
     header{
+        #profileBtn{
+            .user{
+                display: none;
+            }
+
+            .logout{
+                font-size: 10px;
+                width: 10%;
+                text-align: center;
+            }
+        }
         .btn{
             display: none;
         }

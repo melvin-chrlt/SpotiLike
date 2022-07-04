@@ -8,6 +8,7 @@ use App\Entity\PlaylistLike;
 use App\Repository\CategoryRepository;
 use App\Repository\PlaylistRepository;
 use App\Repository\PlaylistLikeRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,9 +20,7 @@ class PlaylistController extends AbstractController
     #[Route('/playlist', name: 'app_playlist')]
     public function index(): Response
     {
-        return $this->render('playlist/index.html.twig', [
-            'controller_name' => 'PlaylistController',
-        ]);
+        return $this->render('playlist/index.html.twig');
     }
 
     // ADD PLAYLIST
@@ -63,23 +62,14 @@ class PlaylistController extends AbstractController
 
         //On vérifie si il correspond à celui de la session courante
         if($this->isCsrfTokenValid('delete-playlist', $csrf_token)){;
-            $playlistLikeManager->remove($playlistLike);
-            $playlistManager->remove($playlist);
+            $playlistLikeManager->removeLike();
+            $playlistManager->removeLike();
             // $this->addFlash('success', 'La playlist a bien été supprimée');
             return $this->redirectToRoute('app_profile');
         }
         
         // $this->addFlash('error', 'Le csrf Token est invalide');
         return $this->redirectToRoute('app_profile');
-    }
-
-    // SEE ALL PLAYLISTS
-    #[Route('/Allplaylist', name: 'app_all_playlist')]
-    public function seeAll(PlaylistRepository $playlistManager): Response
-    {
-        $entities = $playlistManager->findAll();
-        
-        return $this->render('playlist/all.html.twig', ['entities' => $entities]);
     }
 
     // SEE POP PLAYLISTS
@@ -167,40 +157,44 @@ class PlaylistController extends AbstractController
     // LIKE PLAYLIST
     #[Route('/playlist/{id}/like', name: 'app_like_playlist')]
     #[IsGranted('ROLE_USER')]
-    public function like(int $id, Request $request, PlaylistRepository $playlistManager): Response
+    public function like(EntityManagerInterface $em, PlaylistLikeRepository $likeManager, Playlist $playlist, Request $request, PlaylistRepository $playlistManager): Response
     {
         $user = $this->getUser();
         
-        $playlist = $playlistManager->findOneBy(['id' => $id]);
-        if($playlist->getLikes()->contains($user) == true ){
-            $playlist->removeLike($user);
-        }else{
-            $playlist->addLike($user);
-        }
+        // $playlist = $playlistManager->findOneBy(['id' => $id]);
+        // $like = $likeManager->findOneBy([
+        //             'playlist' => $playlist,
+        //             'user' => $user
+        //         ]);
+        // if($playlist->getLikes()->contains($user) == true ){
+        //     $playlist->removeLike($like);
+        // }else{
+        //     $playlist->addLike($like);
+        // }
 
-        $playlistManager->add($playlist);
-        return $this->redirect($request->headers->get('referer'));
+        // $playlistManager->add($playlist);
+        // return $this->redirect($request->headers->get('referer'));
 
         // Si le user a déjà liké
-        // if($playlist->isLikedByUser($user)) {
-        //     $like = $likeManager->findOneBy([
-        //         'playlist' => $playlist,
-        //         'user' => $user
-        //     ]);
-        //     $em->remove($like);
-        //     $em->flush();
+        if($playlist->isLikedByUser($user)) {
+            $like = $likeManager->findOneBy([
+                'playlist' => $playlist,
+                'user' => $user
+            ]);
+            $em->remove($like);
+            $em->flush();
             
-        //     return $this->redirect($request->headers->get('referer'));
-        // }
+            return $this->redirect($request->headers->get('referer'));
+        }
         // Si le user n'a pas liké
-        // $like = new PlaylistLike();
-        // $like->setPlaylist($playlist)
-        // ->setUser($user);
+        $like = new PlaylistLike();
+        $like->setPlaylist($playlist)
+        ->setUser($user);
         
-        // $em->persist($like);
-        // $em->flush();
+        $em->persist($like);
+        $em->flush();
         
-        // return $this->redirect($request->headers->get('referer'));
+        return $this->redirect($request->headers->get('referer'));
     }
 
     // CLASSEMENT PLAYLISTS LIKE
@@ -210,11 +204,11 @@ class PlaylistController extends AbstractController
         $entities = $playlistManager->findAll();
         //array like  +tri
         //renvoi array a la vue
-        dd($entities);
+        // dd($entities);
         foreach ($entities as $entity){
             $likes[] = $entity->getLikes();
         } 
-        dd($likes);
+        // dd($likes);
         usort($entities , function ($item1, $item2){
             return $item1->getLikes() <=>  $item2->getLikes();
         });
@@ -234,5 +228,12 @@ class PlaylistController extends AbstractController
             'entities' => $entities,
             'likes' => $likes
         ]);
+    }
+
+    // PAGE TUTO
+    #[Route('/tuto', name: 'app_tuto')]
+    public function tuto(): Response
+    {
+        return $this->render('playlist/tuto.html.twig');
     }
 }
