@@ -7,9 +7,8 @@ use App\Form\PlaylistType;
 use App\Entity\PlaylistLike;
 use App\Repository\CategoryRepository;
 use App\Repository\PlaylistRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PlaylistLikeRepository;
-use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -67,7 +66,7 @@ class PlaylistController extends AbstractController
         $csrf_token = $request->request->get('token');
 
         //On vérifie si il correspond à celui de la session courante
-        if($this->isCsrfTokenValid('delete-playlist', $csrf_token)){;
+        if($this->isCsrfTokenValid('delete-playlist', $csrf_token)){
             // $playlistManager->find(['id' => $id])->removeLike($playlistLike);
             $playlistManager->remove($playlist);
             $this->addFlash('success', 'La playlist a bien été supprimée');
@@ -76,15 +75,6 @@ class PlaylistController extends AbstractController
         
         // $this->addFlash('error', 'Le csrf Token est invalide');
         return $this->redirectToRoute('app_profil');
-    }
-
-    // SEE ALL PLAYLISTS
-    #[Route('/Allplaylist', name: 'app_all_playlist')]
-    public function seeAll(PlaylistRepository $playlistManager): Response
-    {
-        $entities = $playlistManager->findAll();
-        
-        return $this->render('playlist/all.html.twig', ['entities' => $entities]);
     }
 
     // SEE POP PLAYLISTS
@@ -172,7 +162,7 @@ class PlaylistController extends AbstractController
     // LIKE PLAYLIST
     #[Route('/playlist/{id}/like', name: 'app_like_playlist')]
     #[IsGranted('ROLE_USER')]
-    public function like(int $id, PlaylistLike $playlistLike, Request $request, PlaylistRepository $playlistManager, EntityManagerInterface $em): Response
+    public function like(int $id, EntityManagerInterface $em, Request $request, PlaylistRepository $playlistManager): Response
     {
         // $user = $this->getUser();
         
@@ -203,7 +193,7 @@ class PlaylistController extends AbstractController
             
         //     return $this->redirect($request->headers->get('referer'));
         // }
-        // Si le user n'a pas liké
+        // // Si le user n'a pas liké
         // $like = new PlaylistLike();
         // $like->setPlaylist($playlist)
         // ->setUser($user);
@@ -240,5 +230,12 @@ class PlaylistController extends AbstractController
             'entities' => $entities,
             'likes' => $likes
         ]);
+    }
+
+    // PAGE TUTO
+    #[Route('/tuto', name: 'app_tuto')]
+    public function tuto(): Response
+    {
+        return $this->render('playlist/tuto.html.twig');
     }
 }

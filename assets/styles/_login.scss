@@ -122,3 +122,50 @@
         }
     }
 }
+
+@media screen and (max-width: 1250px){
+    #loginPage{
+        section{
+            width: 60%;
+        }
+    }
+}
+
+@media screen and (max-width: 850px){
+    #loginPage{
+        section{
+            width: 75%;
+        }
+    }
+}
+
+@media screen and (max-width: 660px){
+    #loginPage{
+        section{
+            flex-direction: column;
+
+            .formImage{
+                width: 100%;
+            }
+
+            .form{
+                width: 100%;
+                padding: 1em 0;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 450px){
+    #loginPage{
+        section{
+            .form{
+                form{
+                    button{
+                        font-size: 14px;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -207,9 +207,16 @@ header{
         }
 
         #profileBtn{
-            display: none;
-        }
+            .user{
+                display: none;
+            }
 
+            .logout{
+                font-size: 10px;
+                width: 10%;
+                text-align: center;
+            }
+        }
         .btn{
             display: none;
         }

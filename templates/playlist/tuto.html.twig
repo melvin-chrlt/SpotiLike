@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Spotilike | Tuto partage{% endblock %}
+
+{% block body %}
+{% include "__header.html.twig" %}
+    <section id="tuto">
+        <div class="title">
+            <h2>Comment partager sa playlist ?</h2>
+            <p>(Que sur pc pour le moment)</p>
+        </div>
+
+        <section>
+            <article>
+                <img src="{{ asset('images/screen1.png') }}" alt="Capture d'écran d'une playlist sur Spotify">
+                <p>Cliquez sur les 3 petits points pour accéder aux paramètres de partage de la playlist</p>
+            </article>
+
+            <article>
+                <img src="{{ asset('images/screen2.png') }}" alt="Capture d'écran des paramètres de partage d'une playlist sur Spotify">
+                <p>Dans "Partager", cliquez sur "Copier le lien vers la playlist"</p>
+            </article>
+
+            <article>
+                <img src="{{ asset('images/screen3.png') }}" alt="Capture d'écran de la page ajouter une playlist du site SpotiLike">
+                <p>Pour finir, coller ici et choisissez une catégorie"</p>
+            </article>
+        </section>
+    </section>
+{% include "__footer.html.twig" %}
+{% endblock %}
