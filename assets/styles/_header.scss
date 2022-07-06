@@ -29,6 +29,15 @@ header{
                     font-size: 24px;
                 }
             }
+
+            .deco{
+                display: none;
+                
+                a{
+                    color: red;
+                    font-size: 1.5em;
+                }
+            }
         }
     }
 
@@ -168,6 +177,22 @@ header{
                 li>a{
                     font-size: 35px;
                 }
+
+                .deco{
+                    display: block;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 700px){
+    header{
+        .menu{
+            .user{
+                i{
+                    font-size: 5em;
+                }
             }
         }
     }
@@ -175,6 +200,16 @@ header{
 
 @media screen and (max-width: 600px){
     header{
+        .menu{
+            ul{
+                transform: translateY(10%);
+            }
+        }
+
+        #profileBtn{
+            display: none;
+        }
+
         .btn{
             display: none;
         }

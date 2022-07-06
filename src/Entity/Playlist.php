@@ -18,7 +18,7 @@ class Playlist
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'text')]
+    #[ORM\Column(type: 'text', unique: true, length: 85)]
     private $code;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'playlists')]
@@ -26,6 +26,7 @@ class Playlist
     private $author;
 
     #[ORM\OneToMany(mappedBy: 'playlist', targetEntity: PlaylistLike::class)]
+    #[ORM\JoinColumn(nullable: true)]
     private $likes;
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'playlist')]

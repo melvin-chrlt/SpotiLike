@@ -8,7 +8,9 @@
     <section>
         <div class="formImage"></div>
         <div class="form">
-            <p>Vous n'avez pas de compte ? <a href="/register">Créez un compte</a></p>
+            <div id="compte">
+                <p>Vous n'avez pas de compte ? <a href="/register">Créez un compte</a></p>
+            </div>
             <form method="post">
                 {# {% if error %}
                     <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -42,8 +44,9 @@
                         </label>
                     </div>
                 #}
-
-                <button type="submit" class="btn">Se connecter</button>
+                <div id="button">
+                    <button type="submit" class="btn">Se connecter</button>
+                </div>
             </form>
         </div>
     </section>

@@ -1,7 +1,7 @@
 #loginPage{
     section{
-        width: 45%;
-        height: 50vh;
+        width: 65%;
+        height: 60vh;
         margin: 7em auto;
         display: flex;
 
@@ -20,18 +20,24 @@
             padding-right: 4em;
             padding-left: 1.5em;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
 
-            p{
-                position: absolute;
-                top: 10px;
-                right: 10px;
-                font-family: montserrat;
-
-                a{
-                    color: $secondaryColor;
-                    text-decoration: none;
+            #compte{
+                display: flex;
+                justify-content: end;
+                width: 100%;
+                
+                p{
+                    top: 10px;
+                    right: 10px;
+                    font-family: montserrat;
+    
+                    a{
+                        color: $secondaryColor;
+                        text-decoration: none;
+                    }
                 }
             }
 
@@ -70,9 +76,47 @@
                     }
                 }
 
-                button{
-                    margin-top: 1.5em;
-                    margin-left: 6em;
+                #button{
+                    
+                    button{
+                        margin: 0 auto;
+                        width: max-content;
+                    }
+                }
+
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1050px){
+    #loginPage{
+        section{
+            flex-direction: column;
+            align-items: center;
+
+            .formImage{
+                width: 100%;
+                padding-right: 4em;
+                padding-left: 1.5em;
+            }
+
+            .form{
+                width: 100%;
+                padding-bottom: 1.5em;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 865px){
+    #loginPage{
+        section{
+            .form{
+                #compte{
+                    p{
+                        font-size: 13px;
+                    }
                 }
             }
         }

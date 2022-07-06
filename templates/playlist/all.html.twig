@@ -11,8 +11,6 @@
         {% for entity in entities %}
             <article>
                 <iframe style="border-radius:12px" src="https://open.spotify.com/embed{{ entity.code }}?utm_source=generator" width="20%" height="380" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-                {# <p>Par {{ entity.author.username }}</p> #}
-                {# <a href="{{ path('app_like_playlist', {'id': entity.id}) }}" class="btn btn-link js-like" onclick="onClickBtnLike(event)"> #}
                 <a href="#">
                     {% if app.user and entity.isLikedByUser(app.user) %}
                         <i class="fa-solid fa-heart" style="color:#81B71A";></i>

@@ -17,3 +17,24 @@ body {
     font-weight: 700;
     font-size: 20px;
 }
+
+#success, #error{
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 1em 2em;
+    border-radius: 25px;
+    background-color: $secondaryColor;
+    font-family: montserrat;
+    color: white;
+    width: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+#error{
+    background-color: red;
+}

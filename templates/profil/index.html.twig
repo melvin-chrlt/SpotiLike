@@ -7,6 +7,16 @@
     <section id="profile">
         <a href="/addPlaylist" class="btn">Partager une playlist</a>
         <h2>Mes playlists partagées</h2>
+        {% for message in app.flashes('success') %}
+            <div id="success">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% for message in app.flashes('error') %}
+            <div id="error">
+                {{ message }}
+            </div>
+        {% endfor %}
         <section>
             {% for entity in entities %}
                 <article>
@@ -21,7 +31,8 @@
                                 <span class="js-likes">{{ entity.likes|length }}</span>
                         </a>
                         {% if app.user %}
-                            <form action="{{path('app_delete_playlist', {id:entity.id}) }}" method='POST'>
+                            <form action="{{path('app_delete_playlist', {'idDelete':entity.id}) }}" method='POST'>
+                                {# <input type="hidden" name="method" value="delete"> #}
                                 <input type="hidden" name="token" value="{{ csrf_token('delete-playlist') }}">
                                 <button type="submit">Supprimer</button>
                             </form>

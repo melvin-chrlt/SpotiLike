@@ -14,7 +14,7 @@
                 <article>
                     <iframe style="border-radius:12px" src="https://open.spotify.com/embed{{ entity.code }}?utm_source=generator" width="100%" height="380" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
                     <a href="{{ path('app_like_playlist', {'id': entity.id}) }}" class="btn-link js-like">
-                        {% if app.user and entity.like(app.user) %}
+                        {% if entity.isLikedByUser(app.user) %}
                             <i class="fa-solid fa-heart"></i>
                         {% else %}
                             <i class="fa-regular fa-heart"></i>
@@ -40,7 +40,6 @@
             const icone = this.document.querySelector('i');
 
             axios.get(url).then(function(response){
-                console.log(response);
                 spanCount.textContent = response.data.likes;
 
                 if(icone.classList.contains('solid')) {

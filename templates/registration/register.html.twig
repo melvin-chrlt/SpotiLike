@@ -8,7 +8,9 @@
     <section>
         <div class="formImage"></div>
         <div class="form">
-            <p>Vous avez déjà un compte ? <a href="/login">Connectez-vous</a></p>
+            <div id="compte">
+                <p>Vous avez déjà un compte ? <a href="/login">Connectez-vous</a></p>
+            </div>
             {{ form_start(registrationForm) }}
                 <h2>Créez un compte</h2>
                 {{ form_row(registrationForm.email) }}

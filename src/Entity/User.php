@@ -35,6 +35,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $playlists;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: PlaylistLike::class)]
+    #[ORM\JoinColumn(nullable: true)]
     private $likes;
 
     public function __construct()

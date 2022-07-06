@@ -7,7 +7,9 @@ use App\Form\PlaylistType;
 use App\Entity\PlaylistLike;
 use App\Repository\CategoryRepository;
 use App\Repository\PlaylistRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PlaylistLikeRepository;
+use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,9 +21,7 @@ class PlaylistController extends AbstractController
     #[Route('/playlist', name: 'app_playlist')]
     public function index(): Response
     {
-        return $this->render('playlist/index.html.twig', [
-            'controller_name' => 'PlaylistController',
-        ]);
+        return $this->render('playlist/index.html.twig');
     }
 
     // ADD PLAYLIST
@@ -34,19 +34,24 @@ class PlaylistController extends AbstractController
         $form = $this->createForm(PlaylistType::class, $playlist); // $this = AbsratController (boîte à outil)
         $form->handleRequest($request); // vérifie si chaque champ est bon
         
-        if($form->isSubmitted() && $form->isValid()){
-            $url = $form["code"]->getData();// récupère ce qu'il y a dans l'input "code"
-            $url = parse_url($url, PHP_URL_PATH); // prend une partie du lien (ici c'est le chemin)
-            // dd($playlist);
-            $playlist
-                ->setAuthor($this->getUser())
-                ->setCode($url);   
-            // set dans mon instance de playlist le user de la session actuelle et le code contenu dans $url
-            $playlistManager->add($playlist);
-            // $this->addFlash('success', 'La playlist a bien été ajoutée');
+        if($form->isSubmitted()){
+            if($form->isValid()){
+                $url = $form["code"]->getData();// récupère ce qu'il y a dans l'input "code"
+                $url = parse_url($url, PHP_URL_PATH); // prend une partie du lien (ici c'est le chemin)
+                // dd($playlist);
+                $playlist
+                    ->setAuthor($this->getUser())
+                    ->setCode($url);   
+                // set dans mon instance de playlist le user de la session actuelle et le code contenu dans $url
+                $playlistManager->add($playlist);
+                $this->addFlash('success', 'La playlist a bien été ajoutée');
+                return $this->redirectToRoute('app_profil');
+            }
+        } else {
+            $this->addFlash('error', 'Veuillez réessayez avec une autre playlist');
             return $this->redirectToRoute('app_profil');
         }
-        
+
         return $this->render('playlist/add.html.twig', [
             'form' => $form->createView(),
             'categories' => $categories,
@@ -54,23 +59,23 @@ class PlaylistController extends AbstractController
     }
 
     // REMOVE PLAYLIST
-    #[Route('/delPlaylist/{id<\d+>}', name: 'app_delete_playlist')]
+    #[Route('/delPlaylist/{idDelete}', name: 'app_delete_playlist')]
     #[IsGranted('ROLE_USER')]
-    public function delete(Playlist $playlist, PlaylistLike $playlistLike, PlaylistRepository $playlistManager, PlaylistLikeRepository $playlistLikeManager, Request $request): Response
+    public function delete(int $id, Playlist $playlist, PlaylistLike $playlistLike, PlaylistRepository $playlistManager, Request $request): Response
     {
         //On récupère le token envoyer par le formulaire
         $csrf_token = $request->request->get('token');
 
         //On vérifie si il correspond à celui de la session courante
         if($this->isCsrfTokenValid('delete-playlist', $csrf_token)){;
-            $playlistLikeManager->remove($playlistLike);
+            // $playlistManager->find(['id' => $id])->removeLike($playlistLike);
             $playlistManager->remove($playlist);
-            // $this->addFlash('success', 'La playlist a bien été supprimée');
-            return $this->redirectToRoute('app_profile');
+            $this->addFlash('success', 'La playlist a bien été supprimée');
+            return $this->redirectToRoute('app_profil');
         }
         
         // $this->addFlash('error', 'Le csrf Token est invalide');
-        return $this->redirectToRoute('app_profile');
+        return $this->redirectToRoute('app_profil');
     }
 
     // SEE ALL PLAYLISTS
@@ -158,7 +163,7 @@ class PlaylistController extends AbstractController
     #[Route('/DayPlaylist', name: 'app_day_playlist')]
     public function day(PlaylistRepository $playlistManager): Response
     {
-        $entities = $playlistManager->findBy(['id' => rand(33, 42)]);
+        $entities = $playlistManager->findBy(['id' => rand(33, 48)]);
         
         return $this->render('playlist/day.html.twig', ['entities' => $entities]);
     }
@@ -167,18 +172,24 @@ class PlaylistController extends AbstractController
     // LIKE PLAYLIST
     #[Route('/playlist/{id}/like', name: 'app_like_playlist')]
     #[IsGranted('ROLE_USER')]
-    public function like(int $id, Request $request, PlaylistRepository $playlistManager): Response
+    public function like(int $id, PlaylistLike $playlistLike, Request $request, PlaylistRepository $playlistManager, EntityManagerInterface $em): Response
     {
-        $user = $this->getUser();
+        // $user = $this->getUser();
         
         $playlist = $playlistManager->findOneBy(['id' => $id]);
-        if($playlist->getLikes()->contains($user) == true ){
-            $playlist->removeLike($user);
-        }else{
-            $playlist->addLike($user);
-        }
-
-        $playlistManager->add($playlist);
+        // si la playlist a un like de l'user connecté alors
+        // dd($playlistLike);
+        // if($playlist->getLikes()->contains($this->getUser()) == true ){
+            // le like de l'user doit être enlevé
+            /** @var \App\Entity\PlaylistLike $playlistLike */
+            $em->remove($playlistLike);
+            $em->flush();
+            return $this->redirect($request->headers->get('referer'));
+        // }else{
+            // ajout d'un like de l'user
+            // $playlist->addLike($user);
+        // }
+        
         return $this->redirect($request->headers->get('referer'));
 
         // Si le user a déjà liké
@@ -210,14 +221,9 @@ class PlaylistController extends AbstractController
         $entities = $playlistManager->findAll();
         //array like  +tri
         //renvoi array a la vue
-        dd($entities);
         foreach ($entities as $entity){
             $likes[] = $entity->getLikes();
-        } 
-        dd($likes);
-        usort($entities , function ($item1, $item2){
-            return $item1->getLikes() <=>  $item2->getLikes();
-        });
+        }
         return $this->render('classement/like.html.twig', ['entities' => $entities]);
     }
 

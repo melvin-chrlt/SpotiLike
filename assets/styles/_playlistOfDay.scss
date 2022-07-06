@@ -41,6 +41,9 @@
                 color: white;
                 text-decoration: none;
                 font-family: montserrat;
+                display: flex;
+                align-items: center;
+                gap: 0.75em;
 
                 i{
                     color: $secondaryColor;
