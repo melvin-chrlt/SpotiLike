@@ -25,8 +25,7 @@ class Playlist
     #[ORM\JoinColumn(nullable: false)]
     private $author;
 
-    #[ORM\OneToMany(mappedBy: 'playlist', targetEntity: PlaylistLike::class)]
-    #[ORM\JoinColumn(nullable: true)]
+    #[ORM\OneToMany(mappedBy: 'playlist', targetEntity: PlaylistLike::class, cascade:["remove"])]
     private $likes;
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'playlist')]

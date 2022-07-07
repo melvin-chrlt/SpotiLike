@@ -31,9 +31,9 @@
                                 <span class="js-likes">{{ entity.likes|length }}</span>
                         </a>
                         {% if app.user %}
-                            <form action="{{path('app_delete_playlist', {'idDelete':entity.id}) }}" method='POST'>
-                                {# <input type="hidden" name="method" value="delete"> #}
-                                <input type="hidden" name="token" value="{{ csrf_token('delete-playlist') }}">
+                            <form action="{{path('app_delete_playlist', {'id':entity.id}) }}" method='POST'>
+                                {# <input type="hidden" name="method" value="DELETE"> #}
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token('delete-playlist' ~ entity.id) }}">
                                 <button type="submit">Supprimer</button>
                             </form>
                         {% endif %}
