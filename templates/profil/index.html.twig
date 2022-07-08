@@ -18,45 +18,59 @@
             </div>
         {% endfor %}
         <section>
-            {% for entity in entities %}
-                <article>
-                    <iframe style="border-radius:12px" src="https://open.spotify.com/embed{{ entity.code }}?utm_source=generator" width="100%" height="380" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-                    <div>
-                        <a href="{{ path('app_like_playlist', {'id': entity.id}) }}" class="btn-link js-like">
-                            {% if app.user and entity.isLikedByUser(app.user) %}
-                                <i class="fa-solid fa-heart"></i>
-                            {% else %}
-                                <i class="fa-regular fa-heart"></i>
-                            {% endif %}
-                                <span class="js-likes">{{ entity.likes|length }}</span>
-                        </a>
-                        {% if app.user %}
-                            <form action="{{path('app_delete_playlist', {'id':entity.id}) }}" method='POST'>
-                                {# <input type="hidden" name="method" value="DELETE"> #}
-                                <input type="hidden" name="csrf_token" value="{{ csrf_token('delete-playlist' ~ entity.id) }}">
-                                <button type="submit">Supprimer</button>
-                            </form>
-                        {% endif %}
-                    </div>
-                </article>
-            {% endfor %}
+            {% if entities|length > 0 %}
+                <div class="playlistCards">
+                    {% for entity in entities %}
+                        <article>
+                            <iframe style="border-radius:12px" src="https://open.spotify.com/embed{{ entity.code }}?utm_source=generator" width="100%" height="380" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+                            <div>
+                                <a href="{{ path('app_like_playlist', {'id': entity.id}) }}" class="btn-link js-like">
+                                    {% if app.user and entity.isLikedByUser(app.user) %}
+                                        <i class="fa-solid fa-heart"></i>
+                                    {% else %}
+                                        <i class="fa-regular fa-heart"></i>
+                                    {% endif %}
+                                        <span class="js-likes">{{ entity.likes|length }}</span>
+                                </a>
+                                {% if app.user %}
+                                    <form action="{{path('app_delete_playlist', {'id':entity.id}) }}" method='POST'>
+                                        {# <input type="hidden" name="method" value="DELETE"> #}
+                                        <input type="hidden" name="csrf_token" value="{{ csrf_token('delete-playlist' ~ entity.id) }}">
+                                        <button type="submit">Supprimer</button>
+                                    </form>
+                                {% endif %}
+                            </div>
+                        </article>
+                    {% endfor %}
+                </div>
+                {{ knp_pagination_render(entities) }}
+            {% else %}
+                <p>Vous n'avez pas partager de playlist !</p>
+            {% endif %}
         </section>
 
         <h2>Mes playlists likées</h2>
         <section>
-            {% for like in likes %}
-                <article>
-                    <iframe style="border-radius:12px" src="https://open.spotify.com/embed{{ like.playlist.code }}?utm_source=generator" width="100%" height="380" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-                    <a href="{{ path('app_like_playlist', {'id': like.id}) }}" class="btn-link js-like">
-                        {% if app.user and like.playlist.isLikedByUser(app.user) %}
-                            <i class="fa-solid fa-heart"></i>
-                        {% else %}
-                            <i class="fa-regular fa-heart"></i>
-                        {% endif %}
-                            <span class="js-likes">{{ like.playlist.likes|length }}</span>
-                    </a>
-                </article>
-            {% endfor %}
+            {% if entities|length > 0 %}
+                <div class="playlistCards">
+                    {% for like in likes %}
+                        <article>
+                            <iframe style="border-radius:12px" src="https://open.spotify.com/embed{{ like.playlist.code }}?utm_source=generator" width="100%" height="380" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+                            <a href="{{ path('app_like_playlist', {'id': like.id}) }}" class="btn-link js-like">
+                                {% if app.user and like.playlist.isLikedByUser(app.user) %}
+                                    <i class="fa-solid fa-heart"></i>
+                                {% else %}
+                                    <i class="fa-regular fa-heart"></i>
+                                {% endif %}
+                                    <span class="js-likes">{{ like.playlist.likes|length }}</span>
+                            </a>
+                        </article>
+                    {% endfor %}
+                </div>
+                {{ knp_pagination_render(likes) }}
+            {% else %}
+                <p>Vous n'avez pas likée de playlist !</p>
+            {% endif %}
         </section>
     </section>
 {% include "__footer.html.twig" %}

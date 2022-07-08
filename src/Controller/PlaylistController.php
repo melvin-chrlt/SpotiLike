@@ -9,6 +9,7 @@ use App\Repository\CategoryRepository;
 use App\Repository\PlaylistRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PlaylistLikeRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -37,7 +38,6 @@ class PlaylistController extends AbstractController
             if($form->isValid()){
                 $url = $form["code"]->getData();// récupère ce qu'il y a dans l'input "code"
                 $url = parse_url($url, PHP_URL_PATH); // prend une partie du lien (ici c'est le chemin)
-                // dd($playlist);
                 $playlist
                     ->setAuthor($this->getUser())
                     ->setCode($url);   
@@ -45,11 +45,11 @@ class PlaylistController extends AbstractController
                 $playlistManager->add($playlist);
                 $this->addFlash('success', 'La playlist a bien été ajoutée');
                 return $this->redirectToRoute('app_profil');
+            } else {
+                $this->addFlash('error', 'Veuillez réessayez avec une autre playlist');
+                return $this->redirectToRoute('app_profil');
             }
-        } else {
-            $this->addFlash('error', 'Veuillez réessayez avec une autre playlist');
-            return $this->redirectToRoute('app_profil');
-        }
+        } 
 
         return $this->render('playlist/add.html.twig', [
             'form' => $form->createView(),
@@ -62,22 +62,24 @@ class PlaylistController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function delete(Playlist $playlist, EntityManagerInterface $em, Request $request): Response
     {
-        //On récupère le token envoyer par le formulaire
+        // //On récupère le token envoyer par le formulaire
         // $csrf_token = $request->get('token');
-
-        //On vérifie si il correspond à celui de la session courante
-        // if($this->isCsrfTokenValid('delete-playlist', $csrf_token)){
-        //     $playlist = $playlistManager->find(['id' => $id]);
-        //     $playlistManager->remove($playlist);
-        //     $this->addFlash('success', 'La playlist a bien été supprimée');
-        //     return $this->redirectToRoute('app_profil');
+        
+        // if($this->getUser() === $playlist->getAuthor()){
+        //     //On vérifie si il correspond à celui de la session courante
+        //     if($this->isCsrfTokenValid('delete-playlist'.$playlist->getId(), $csrf_token)){
+        //         $em->remove($playlist);
+        //         $em->flush();
+        //     }
         // }
+        
+        // return $this->redirectToRoute('app_profil');
         if($this->getUser() === $playlist->getAuthor()){
-            // dd("test");
-
+            
             if ($this->isCsrfTokenValid('delete-playlist'.$playlist->getId(), $request->get('csrf_token'))) {
                 $em->remove($playlist);
                 $em->flush();
+                $this->addFlash('success', 'La playlist a bien été supprimée');
             }
         }
         return $this->redirectToRoute('app_profil');
@@ -200,7 +202,7 @@ class PlaylistController extends AbstractController
     #[Route('/ClassementLikePlaylist', name: 'app_classement_like_playlist')]
     public function classementLike(PlaylistRepository $playlistManager): Response
     {
-        $entities = $playlistManager->findBy(['likes' => 'DESC']);
+        $entities = $playlistManager->findAll();
         //array like  +tri
         //renvoi array a la vue
         // foreach ($entities as $entity){
@@ -211,12 +213,24 @@ class PlaylistController extends AbstractController
 
     // PAGE MON COMPTE
     #[Route('/profile', name: 'app_profil')]
-    public function profil(PlaylistRepository $playlistManager, PlaylistLikeRepository $playlistLikeManager): Response
+    public function profil(Request $request,PlaylistRepository $playlistManager, PlaylistLikeRepository $playlistLikeManager, PaginatorInterface $paginator): Response
     {
         /** @var \App\Entity\User $user */
         $user = $this->getUser();
-        $entities = $playlistManager->findBy(['author' => $user->getId()]);
-        $likes = $playlistLikeManager->findBy(['user' => $user->getId()]);
+        $playlist = $playlistManager->findBy(['author' => $user->getId()]);
+        $playlistLike = $playlistLikeManager->findBy(['user' => $user->getId()]);
+
+        $entities = $paginator->paginate(
+            $playlist,
+            $request->query->getInt('page', 1),
+            5
+        );
+
+        $likes = $paginator->paginate(
+            $playlistLike,
+            $request->query->getInt('page', 1),
+            5
+        );
 
         return $this->render('profil/index.html.twig', [
             'entities' => $entities,

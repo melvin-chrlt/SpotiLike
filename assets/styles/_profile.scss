@@ -20,42 +20,67 @@
     section{
         padding: 3em 0;
         display: flex;
-        justify-content: center;
+        flex-direction: column;
+        align-items: center;
         flex-wrap: wrap;
         gap: 1.5em;
 
-        a{
+        .playlistCards{
             display: flex;
-            align-items: center;
-            color: white;
-            font-family: montserrat;
-            text-decoration: none;
+            justify-content: center;
+            gap: 1.5em;
+            flex-wrap: wrap;
 
-            i{
-                color: $secondaryColor;
-                margin-right: 0.5em;
-                font-size: 1.5em;
-            }
-        }
-
-        article{
-            div{
+            a{
                 display: flex;
-                justify-content: space-between;
-
-                form{
-                    button{
-                        background-color: red;
-                        color: black;
-                        font-family: montserrat;
-                        font-weight: bold;
-                        padding: 0.5em;
-                        border-radius: 10px;
-                        border: none;
+                align-items: center;
+                color: white;
+                font-family: montserrat;
+                text-decoration: none;
+    
+                i{
+                    color: $secondaryColor;
+                    margin-right: 0.5em;
+                    font-size: 1.5em;
+                }
+            }
+    
+            article{
+                div{
+                    display: flex;
+                    justify-content: space-between;
+    
+                    form{
+                        button{
+                            background-color: red;
+                            color: black;
+                            font-family: montserrat;
+                            font-weight: bold;
+                            padding: 0.5em;
+                            border-radius: 10px;
+                            border: none;
+                            cursor: pointer;
+                        }
                     }
                 }
             }
         }
 
+        .pagination{
+            display: flex;
+            gap: 0.5em;
+
+            span{
+                padding: 5px;
+                border: $secondaryColor 1px solid;
+                cursor: pointer;
+                font-family: montserrat;
+                
+                a{
+                    color: white;
+                    text-decoration: none;
+                }
+            }
+        }
     }
 }

@@ -28,6 +28,20 @@ header{
                     font-family: raleway;
                     font-size: 24px;
                 }
+                
+                .underline{
+                    width: 50%;
+                    height: 2px;
+                    background-color: $secondaryColor;
+                    margin-top: 7px;
+                    transition: all ease-in-out 0.2s;
+                }
+                
+                a:hover{
+                    .underline{
+                        width: 100%;
+                    }
+                }
             }
 
             .deco{
